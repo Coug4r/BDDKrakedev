@@ -18,7 +18,8 @@ public class UpdateVehiculo {
 				+ "anio = ?, "
 				+ "precio = ?, "
 				+ "color = ?, "
-				+ "disponible = ? "
+				+ "disponible = ?, "
+				+ "kilometraje = ? "
 				+ "WHERE placa = ?;";
 		try {
 			ps = con.prepareStatement(sql);
@@ -28,7 +29,8 @@ public class UpdateVehiculo {
 			ps.setDouble(4, 7600);
 			ps.setString(5, "Negro");
 			ps.setBoolean(6,true);
-			ps.setString(7, "IG003C");
+			ps.setInt(7, 6000);
+			ps.setString(8, "IG003C");
 			int filas = ps.executeUpdate();
 			log.info("Vehiculo actualizado\nFilas afectadas "+filas);
 		} catch (SQLException e) {

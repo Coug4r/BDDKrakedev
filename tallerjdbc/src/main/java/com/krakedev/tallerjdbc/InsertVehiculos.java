@@ -12,8 +12,8 @@ public class InsertVehiculos {
 	public static void main(String[] args) {
 		Connection con = ConexionPostgres.conexion();
 		PreparedStatement ps = null;
-		String sql = "INSERT INTO vehiculos (placa,marca,modelo,anio,precio,color,disponible)\r\n"
-				+ "VALUES (?,?,?,?,?,?,?)";
+		String sql = "INSERT INTO vehiculos (placa,marca,modelo,anio,precio,color,disponible,kilometraje)\r\n"
+				+ "VALUES (?,?,?,?,?,?,?,?)";
 		try {
 			ps = con.prepareStatement(sql);
 			ps.setString(1, "IG003C");
@@ -23,6 +23,7 @@ public class InsertVehiculos {
 			ps.setDouble(5, 3400.40);
 			ps.setString(6, "Blanco");
 			ps.setBoolean(7,true);
+			ps.setInt(8, 6000);
 			int filas = ps.executeUpdate();
 			log.info("Vehiculo insertado\nFilas afectadas "+filas);
 		} catch (SQLException e) {

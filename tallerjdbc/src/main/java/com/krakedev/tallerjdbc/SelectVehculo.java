@@ -27,7 +27,8 @@ public class SelectVehculo {
 				double precio = rs.getDouble("precio");
 				String color = rs.getString("color");
 				boolean disponible = rs.getBoolean("disponible");
-				System.out.println(placa+" "+marca+" "+modelo+" "+anio+" "+precio+" "+color+" "+disponible);
+				int kilometraje = rs.getInt("kilometraje");
+				System.out.println(placa+" "+marca+" "+modelo+" "+anio+" "+precio+" "+color+" "+disponible+" "+kilometraje);
 			}
 			
 		} catch (SQLException e) {

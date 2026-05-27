@@ -11,7 +11,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.krakdev.videojuegos.entidades.Videojuego;
-import com.krakedev.jdbc.ConexionPostgres;
+import com.krakdev.jdbc.ConexionPostgres;
 
 public class VideojuegoJdbc {
 	private static final Logger log = LogManager.getLogger(VideojuegoJdbc.class); 
@@ -108,20 +108,15 @@ public class VideojuegoJdbc {
 		Connection con = ConexionPostgres.conexion();
 		PreparedStatement ps = null;
 		Videojuego game = null;
-		String sql = "UPDATE videojuegos WHERE codigo=? SET "
-				+ "nombre=?, "
-				+ "plataforma=?, "
-				+ "precio=?, "
-				+ "disponible=?, "
-				+ "genero=? ";
+		String sql = "UPDATE videojuegos SET nombre=?, plataforma=?, precio=?, disponible=?, genero=? WHERE codigo=? ";
 		try {
 			ps=con.prepareStatement(sql);
-			ps.setString(1, id);
-			ps.setString(2, juego.getNombre());
-			ps.setString(3, juego.getPlataforma());
-			ps.setDouble(4, juego.getPrecio());
-			ps.setBoolean(5, juego.isDisponible());
-			ps.setString(6, juego.getGenero());
+			ps.setString(1, juego.getNombre());
+			ps.setString(2, juego.getPlataforma());
+			ps.setDouble(3, juego.getPrecio());
+			ps.setBoolean(4, juego.isDisponible());
+			ps.setString(5, juego.getGenero());
+			ps.setString(6, id);
 			game = juego;
 			int filas = ps.executeUpdate();
 			log.info("Videojuego actualizado con exito!\nFilas afectadas "+filas);

@@ -3,7 +3,10 @@ package com.krakdev.apijdbc;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = {
+	    "com.krakdev.apijdbc",
+	    "com.krakdev.jdbc.videojuegos"
+	})
 public class ApijdbcApplication {
 
 	public static void main(String[] args) {

@@ -3,7 +3,6 @@ package com.krakdev.peliculas.controllers;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -65,8 +64,27 @@ public class Peliculacontroller {
 	public ResponseEntity<?> eliminar(@PathVariable Long id){
 		try {
 			boolean eliminado = servicios.eliminar(id);
+			return ResponseEntity.ok(eliminado);
 		}catch(Exception e) {
-			
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Pelicula con id "+id+" no encontrada!");
+		}
+	}
+	@GetMapping("/genero")
+	public ResponseEntity<?> buscarPorGenero(String genero){
+		try {
+			List<Pelicula> peliculas = servicios.buscarPorGenero(genero);
+			return ResponseEntity.ok(peliculas);
+		}catch(Exception e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Genero no encontrado");
+		}
+	}
+	@GetMapping("/disponible")
+	public ResponseEntity<?> buscarPorDisponible(){
+		try {
+			List<Pelicula> peliculas = servicios.buscarPorDisponible();
+			return ResponseEntity.ok(peliculas);
+		}catch(Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al buscar disponibles");
 		}
 	}
 }

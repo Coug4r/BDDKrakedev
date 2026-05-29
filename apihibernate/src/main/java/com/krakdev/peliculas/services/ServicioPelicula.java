@@ -32,6 +32,7 @@ public class ServicioPelicula {
 			nueva.setGenero(peli.getGenero());
 			nueva.setDuracion(peli.getDuracion());
 			nueva.setDisponible(peli.isDisponible());
+			nueva.setCalificacion(peli.getCalificacion());
 			return repository.save(nueva);
 		}
 		return null;

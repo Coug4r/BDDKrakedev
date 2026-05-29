@@ -55,15 +55,8 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.krakedev</groupId>
-			<artifactId>tallerjdbc</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
+		</dependency> 
 	</dependencies>
-
-
 	<build>
 		<plugins>
 			<plugin>

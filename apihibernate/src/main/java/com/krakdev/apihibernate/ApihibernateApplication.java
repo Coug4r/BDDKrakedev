@@ -2,8 +2,12 @@ package com.krakdev.apihibernate;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.persistence.autoconfigure.EntityScan;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
-@SpringBootApplication(scanBasePackages = {"com.krakedev"})
+@SpringBootApplication(scanBasePackages = "com.krakdev")
+@EnableJpaRepositories(basePackages = "com.krakdev.peliculas.repository")
+@EntityScan(basePackages = "com.krakdev.peliculas.entidades")
 public class ApihibernateApplication {
 
 	public static void main(String[] args) {

@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.krakdev.peliculas.entidades.Pelicula;
@@ -43,7 +42,7 @@ public class Peliculacontroller {
 		}
 	}
 	@GetMapping("/{id}")
-	public ResponseEntity<?> buscarPorId(@RequestParam Long id){
+	public ResponseEntity<?> buscarPorId(@PathVariable Long id){
 		try {
 			Pelicula peli = servicios.buscarPorId(id);
 			return ResponseEntity.ok(peli);

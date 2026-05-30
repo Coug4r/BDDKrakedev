@@ -6,17 +6,18 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+
 @Entity
 @Table(name = "peliculas")
 public class Pelicula {
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Long id;
-	@Column(nullable = false,length = 100)
+	@Column(nullable = false, length = 100)
 	private String nombre;
-	@Column(nullable = false,length = 100)
+	@Column(nullable = false, length = 100)
 	private String director;
-	@Column(nullable = false,length = 100)
+	@Column(nullable = false, length = 100)
 	private String genero;
 	@Column(nullable = false)
 	private int duracion;
@@ -24,12 +25,13 @@ public class Pelicula {
 	private boolean disponible;
 	@Column(nullable = false)
 	private double calificacion;
-	
+
 	public Pelicula() {
 		super();
 	}
 
-	public Pelicula(String nombre, String director, String genero, int duracion, boolean disponible, double calificacion) {
+	public Pelicula(String nombre, String director, String genero, int duracion, boolean disponible,
+			double calificacion) {
 		super();
 		this.nombre = nombre;
 		this.director = director;
@@ -38,44 +40,55 @@ public class Pelicula {
 		this.disponible = disponible;
 		this.calificacion = calificacion;
 	}
-	
+
 	public Long getId() {
 		return id;
 	}
+
 	public void setId(Long id) {
 		this.id = id;
 	}
+
 	public String getNombre() {
 		return nombre;
 	}
+
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
+
 	public String getDirector() {
 		return director;
 	}
+
 	public void setDirector(String director) {
 		this.director = director;
 	}
+
 	public String getGenero() {
 		return genero;
 	}
+
 	public void setGenero(String genero) {
 		this.genero = genero;
 	}
+
 	public int getDuracion() {
 		return duracion;
 	}
+
 	public void setDuracion(int duracion) {
 		this.duracion = duracion;
 	}
+
 	public boolean isDisponible() {
 		return disponible;
 	}
+
 	public void setDisponible(boolean disponible) {
 		this.disponible = disponible;
 	}
-	
+
 	public double getCalificacion() {
 		return calificacion;
 	}

@@ -3,7 +3,6 @@ package com.krakedev.proyectos.services;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.krakedev.proyectos.entidades.Empleado;
@@ -12,9 +11,12 @@ import com.krakedev.proyectos.repositories.EmpleadoRepository;
 @Service
 public class EmpleadoService {
 
-    @Autowired
     private EmpleadoRepository empleadoRepository;
 
+    public EmpleadoService(EmpleadoRepository empleadoRepository) {
+        this.empleadoRepository = empleadoRepository;
+    }
+    
     public List<Empleado> listarTodos() {
         return empleadoRepository.findAll();
     }

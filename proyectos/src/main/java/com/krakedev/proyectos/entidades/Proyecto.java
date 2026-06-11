@@ -56,10 +56,10 @@ public class Proyecto {
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
 	}
-	public LocalDate getFechaIncio() {
+	public LocalDate getFechaInicio() {
 		return fechaInicio;
 	}
-	public void setFechaIncio(LocalDate fechaIncio) {
+	public void setFechaInicio(LocalDate fechaIncio) {
 		this.fechaInicio = fechaIncio;
 	}
 	public List<Tarea> getTareas() {

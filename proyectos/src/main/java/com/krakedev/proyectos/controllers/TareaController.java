@@ -1,10 +1,12 @@
 package com.krakedev.proyectos.controllers;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,25 +15,31 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.krakedev.proyectos.entidades.Tarea;
 import com.krakedev.proyectos.services.TareaService;
 
 @RestController
 @RequestMapping("/api/tareas")
+@CrossOrigin(origins = "http://localhost:5173", allowedHeaders = {"Authorization", "Content-Type"}, methods = {org.springframework.web.bind.annotation.RequestMethod.GET, org.springframework.web.bind.annotation.RequestMethod.POST, org.springframework.web.bind.annotation.RequestMethod.PUT, org.springframework.web.bind.annotation.RequestMethod.DELETE})
 public class TareaController {
 
     @Autowired
     private TareaService tareaService;
+
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<?> crear(@RequestBody Tarea tarea) {
         try {
             return ResponseEntity.ok(tareaService.guardar(tarea));
+        } catch (ResponseStatusException e) {
+            return ResponseEntity.status(e.getStatusCode()).body(Map.of("error", e.getReason()));
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Error al crear tarea: " + e.getMessage());
+            return ResponseEntity.badRequest().body(Map.of("error", "Error al crear tarea: " + e.getMessage()));
         }
     }
+
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @GetMapping
     public ResponseEntity<?> listarTodas() {
@@ -39,7 +47,7 @@ public class TareaController {
             List<Tarea> tareas = tareaService.listarTodas();
             return ResponseEntity.ok(tareas);
         } catch (Exception e) {
-            return ResponseEntity.internalServerError().body("Error al listar tareas: " + e.getMessage());
+            return ResponseEntity.internalServerError().body(Map.of("error", "Error al listar tareas: " + e.getMessage()));
         }
     }
 
@@ -50,7 +58,7 @@ public class TareaController {
                     .map(ResponseEntity::ok)
                     .orElse(ResponseEntity.notFound().build());
         } catch (Exception e) {
-            return ResponseEntity.internalServerError().body("Error al buscar tarea: " + e.getMessage());
+            return ResponseEntity.internalServerError().body(Map.of("error", "Error al buscar tarea: " + e.getMessage()));
         }
     }
 
@@ -59,8 +67,10 @@ public class TareaController {
         try {
             tarea.setId(id);
             return ResponseEntity.ok(tareaService.guardar(tarea));
+        } catch (ResponseStatusException e) {
+            return ResponseEntity.status(e.getStatusCode()).body(Map.of("error", e.getReason()));
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Error al actualizar tarea: " + e.getMessage());
+            return ResponseEntity.badRequest().body(Map.of("error", "Error al actualizar tarea: " + e.getMessage()));
         }
     }
 
@@ -70,7 +80,7 @@ public class TareaController {
             tareaService.eliminar(id);
             return ResponseEntity.noContent().build();
         } catch (Exception e) {
-            return ResponseEntity.internalServerError().body("Error al eliminar tarea: " + e.getMessage());
+            return ResponseEntity.internalServerError().body(Map.of("error", "Error al eliminar tarea: " + e.getMessage()));
         }
     }
 }

@@ -8,8 +8,9 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter;
+import org.springframework.security.config.Customizer;
 
 import java.util.List;
 
@@ -19,13 +20,14 @@ public class SecurityConfig {
     private final JwtAuthenticatorFilter jwtAutenticationFilter;
 
     public SecurityConfig(JwtAuthenticatorFilter jwtAutenticationFilter) {
-        super();
         this.jwtAutenticationFilter = jwtAutenticationFilter;
     }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http.csrf(csrf -> csrf.disable())
+        return http
+                .cors(Customizer.withDefaults()) // habilita CORS con configuración externa
+                .csrf(csrf -> csrf.disable())
                 .sessionManagement(sessions -> sessions.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/registrar", "/api/auth/login", "/api/proyectos/publico/resumen").permitAll()
@@ -35,13 +37,19 @@ public class SecurityConfig {
     }
 
     @Bean
-    public CorsFilter corsFilter() {
+    public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
+        // Permitir tu frontend en Vite
         config.setAllowedOrigins(List.of("http://localhost:5173"));
-        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
+        // Métodos permitidos
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        // Cabeceras permitidas
         config.setAllowedHeaders(List.of("Authorization", "Content-Type"));
+        // Permitir credenciales (headers como Authorization)
+        config.setAllowCredentials(true);
+
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
-        return new CorsFilter(source);
+        return source;
     }
 }

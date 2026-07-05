@@ -1,0 +1,39 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--primary);
+  padding: 12px 24px;
+  color: white;
+  box-shadow: var(--shadow);
+}
+
+.navbar h3 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.navbar ul {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar li a,
+.navbar li button {
+  color: white;
+  text-decoration: none;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  transition: opacity var(--transition);
+}
+
+.navbar li a:hover,
+.navbar li button:hover {
+  opacity: 0.8;
+}

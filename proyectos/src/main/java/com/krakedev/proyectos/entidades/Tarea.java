@@ -17,72 +17,82 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "tareas")
 public class Tarea {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
-	@Column(nullable = false, length = 200)
-	private String descripcion;
-	@Column(nullable = false)
-	private LocalDate fechaLimite;
-	@Column(nullable = false)
-	private double costoEstimado;
-	@ManyToOne
-	@JoinColumn(name = "proyecto_id")
-	private Proyecto proyecto;
-	@ManyToMany
-	@JoinTable(
-	   name = "tarea_empleados",
-	   joinColumns = @JoinColumn(name = "tarea_id"),
-	   inverseJoinColumns = @JoinColumn(name = "empleado_id"))
-	private List<Empleado> empleados;
-	public Tarea() {
-		super();
-	}
-	public Tarea(String descripcion, LocalDate fechaLimite, double costoEstimado, Proyecto proyecto,
-			List<Empleado> empleados) {
-		super();
-		this.descripcion = descripcion;
-		this.fechaLimite = fechaLimite;
-		this.costoEstimado = costoEstimado;
-		this.proyecto = proyecto;
-		this.empleados = empleados;
-	}
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+    @Column(nullable = false, length = 200)
+    private String descripcion;
+    @Column(nullable = false)
+    private LocalDate fechaLimite;
+    @Column(nullable = false)
+    private double costoEstimado;
+    @Column(nullable = false, length = 10)
+    private String prioridad;
+    @ManyToOne
+    @JoinColumn(name = "proyecto_id")
+    private Proyecto proyecto;
+    @ManyToMany
+    @JoinTable(
+       name = "tarea_empleados",
+       joinColumns = @JoinColumn(name = "tarea_id"),
+       inverseJoinColumns = @JoinColumn(name = "empleado_id"))
+    private List<Empleado> empleados;
 
+    public Tarea() {
+        super();
+    }
 
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
-	}
-	public String getDescripcion() {
-		return descripcion;
-	}
-	public void setDescripcion(String descripcion) {
-		this.descripcion = descripcion;
-	}
-	public LocalDate getFechaLimite() {
-		return fechaLimite;
-	}
-	public void setFechaLimite(LocalDate fechaLimite) {
-		this.fechaLimite = fechaLimite;
-	}
-	public double getCostoEstimado() {
-		return costoEstimado;
-	}
-	public void setCostoEstimado(double costoEstimado) {
-		this.costoEstimado = costoEstimado;
-	}
-	public List<Empleado> getEmpleados() {
-		return empleados;
-	}
-	public void setEmpleados(List<Empleado> empleados) {
-		this.empleados = empleados;
-	}
-	public Proyecto getProyecto() {
-		return proyecto;
-	}
-	public void setProyecto(Proyecto proyecto) {
-		this.proyecto = proyecto;
-	}
+    public Tarea(String descripcion, LocalDate fechaLimite, double costoEstimado, String prioridad, Proyecto proyecto,
+            List<Empleado> empleados) {
+        super();
+        this.descripcion = descripcion;
+        this.fechaLimite = fechaLimite;
+        this.costoEstimado = costoEstimado;
+        this.prioridad = prioridad;
+        this.proyecto = proyecto;
+        this.empleados = empleados;
+    }
+
+    public int getId() {
+        return id;
+    }
+    public void setId(int id) {
+        this.id = id;
+    }
+    public String getDescripcion() {
+        return descripcion;
+    }
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+    public LocalDate getFechaLimite() {
+        return fechaLimite;
+    }
+    public void setFechaLimite(LocalDate fechaLimite) {
+        this.fechaLimite = fechaLimite;
+    }
+    public double getCostoEstimado() {
+        return costoEstimado;
+    }
+    public void setCostoEstimado(double costoEstimado) {
+        this.costoEstimado = costoEstimado;
+    }
+    public String getPrioridad() {
+        return prioridad;
+    }
+    public void setPrioridad(String prioridad) {
+        this.prioridad = prioridad;
+    }
+    public List<Empleado> getEmpleados() {
+        return empleados;
+    }
+    public void setEmpleados(List<Empleado> empleados) {
+        this.empleados = empleados;
+    }
+    public Proyecto getProyecto() {
+        return proyecto;
+    }
+    public void setProyecto(Proyecto proyecto) {
+        this.proyecto = proyecto;
+    }
 }

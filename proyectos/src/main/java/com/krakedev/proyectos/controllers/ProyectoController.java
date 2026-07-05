@@ -1,10 +1,12 @@
 package com.krakedev.proyectos.controllers;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,29 +21,30 @@ import com.krakedev.proyectos.services.ProyectoService;
 
 @RestController
 @RequestMapping("/api/proyectos")
+@CrossOrigin(origins = "http://localhost:5173", allowedHeaders = {"Authorization", "Content-Type"}, methods = {org.springframework.web.bind.annotation.RequestMethod.GET, org.springframework.web.bind.annotation.RequestMethod.POST, org.springframework.web.bind.annotation.RequestMethod.PUT, org.springframework.web.bind.annotation.RequestMethod.DELETE})
 public class ProyectoController {
 
     @Autowired
     private ProyectoService proyectoService;
-    
-    @PreAuthorize("hasRole('ADMIN')")	
+
+    @PreAuthorize("hasRole('ADMIN')")   
     @PostMapping
     public ResponseEntity<?> crear(@RequestBody Proyecto proyecto) {
         try {
             Proyecto nuevo = proyectoService.guardar(proyecto);
             return ResponseEntity.ok(nuevo);
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Error al crear proyecto: " + e.getMessage());
+            return ResponseEntity.badRequest().body(Map.of("error", "Error al crear proyecto: " + e.getMessage()));
         }
     }
 
-    @GetMapping
+    @GetMapping 
     public ResponseEntity<?> listarTodos() {
         try {
             List<Proyecto> proyectos = proyectoService.listarTodos();
             return ResponseEntity.ok(proyectos);
         } catch (Exception e) {
-            return ResponseEntity.internalServerError().body("Error al listar proyectos: " + e.getMessage());
+            return ResponseEntity.internalServerError().body(Map.of("error", "Error al listar proyectos: " + e.getMessage()));
         }
     }
 
@@ -52,7 +55,7 @@ public class ProyectoController {
                     .map(ResponseEntity::ok)
                     .orElse(ResponseEntity.notFound().build());
         } catch (Exception e) {
-            return ResponseEntity.internalServerError().body("Error al buscar proyecto: " + e.getMessage());
+            return ResponseEntity.internalServerError().body(Map.of("error", "Error al buscar proyecto: " + e.getMessage()));
         }
     }
 
@@ -63,7 +66,7 @@ public class ProyectoController {
             Proyecto actualizado = proyectoService.guardar(proyecto);
             return ResponseEntity.ok(actualizado);
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Error al actualizar proyecto: " + e.getMessage());
+            return ResponseEntity.badRequest().body(Map.of("error", "Error al actualizar proyecto: " + e.getMessage()));
         }
     }
     
@@ -74,7 +77,17 @@ public class ProyectoController {
             proyectoService.eliminar(id);
             return ResponseEntity.noContent().build();
         } catch (Exception e) {
-            return ResponseEntity.internalServerError().body("Error al eliminar proyecto: " + e.getMessage());
+            return ResponseEntity.internalServerError().body(Map.of("error", "Error al eliminar proyecto: " + e.getMessage()));
+        }
+    }
+
+    @GetMapping("/publico/resumen")
+    public ResponseEntity<?> resumenPublico() {
+        try {
+            Long total = proyectoService.contarProyectos();
+            return ResponseEntity.ok(Map.of("totalProyectos", total));
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body(Map.of("error", "Error al obtener resumen: " + e.getMessage()));
         }
     }
 }

@@ -18,41 +18,45 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 @Component
-public class JwtAuthenticatorFilter extends OncePerRequestFilter{
-	private final TokenBlackList blaclist;
+public class JwtAuthenticatorFilter extends OncePerRequestFilter {
+    private final TokenBlackList blaclist;
 
-	public JwtAuthenticatorFilter(TokenBlackList blaclist) {
-		super();
-		this.blaclist = blaclist;
-	}
+    public JwtAuthenticatorFilter(TokenBlackList blaclist) {
+        super();
+        this.blaclist = blaclist;
+    }
 
-	@Override
-	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-			throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		String authHeader = request.getHeader("Authorization");
-		if(authHeader == null || !authHeader.startsWith("Bearer ")) {
-			filterChain.doFilter(request, response);
-		}
-		String token = authHeader.substring(7);
-		if(blaclist.estaInvalidado(token)) {
-			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-			response.getWriter().write("Acceso denegado sesion cerrada!");
-			return;
-		}
-		DecodedJWT datosToken = JwtUtil.validarToken(token);
-		if(datosToken!=null) {
-			String username = datosToken.getSubject();
-			String rol = datosToken.getClaim("rol").asString();
-			String rolSpring = "ROLE_"+ rol;
-			SimpleGrantedAuthority authority = new SimpleGrantedAuthority(rolSpring);
-			
-			UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(username, null, Collections.singleton(authority));
-			SecurityContextHolder.getContext().setAuthentication(authentication); 
-		}
-		
-		filterChain.doFilter(request, response);
-	}
-	
-	
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+            throws ServletException, IOException {
+
+        String authHeader = request.getHeader("Authorization");
+
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+        String token = authHeader.substring(7);
+
+        if (blaclist.estaInvalidado(token)) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write("Acceso denegado sesion cerrada!");
+            return;
+        }
+
+        DecodedJWT datosToken = JwtUtil.validarToken(token);
+        if (datosToken != null) {
+            String username = datosToken.getSubject();
+            String rol = datosToken.getClaim("rol").asString();
+            String rolSpring = "ROLE_" + rol;
+            SimpleGrantedAuthority authority = new SimpleGrantedAuthority(rolSpring);
+
+            UsernamePasswordAuthenticationToken authentication =
+                    new UsernamePasswordAuthenticationToken(username, null, Collections.singleton(authority));
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+        }
+
+        filterChain.doFilter(request, response);
+    }
 }
